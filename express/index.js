@@ -17,38 +17,31 @@ app.post('/products', (req, res) => {
    res.status(201).json(products);
 })
 
-app.get('/products/:id/', (req, res) => {
-   const { id } = req.params;
-   products = products.find((item) => item.id === +id);
-
-   res.json(products);
-})
-
-app.put('/products/:id/', (req, res) => {
-   const { id } = req.params;
+app.put('/products/:name/', (req, res) => {
+   const { name } = req.params;
    const data = req.body;
 
-   const product = products.find((item) => item.id === +id);
+   let product = products.find((item) => item.name === name);
 
    if(!product){
       return res.status(404).json({ 'message': 'This product does not exist' })
    }
 
-   products = products.map(item => item.id === +id ? data : item)
+   products = products.map((item) => item.name === name ? data : product)
 
    res.json(products)
 })
 
-app.delete('/products/:id/', (req, res) => {
-   const { id } = req.params;
+app.delete('/products/:name/', (req, res) => {
+   const { name } = req.params;
 
-   const product = products.find((item) => item.id === +id);
+   const product = products.find((item) => item.name === name);
 
    if(!product){
       return res.status(404).json({ 'message': 'This product does not exist' })
    }
 
-   products = products.filter((item) => item.id !== +id)
+   products = products.filter((item) => item.name !== name)
 
    res.json(products)
 })
