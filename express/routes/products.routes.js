@@ -4,24 +4,14 @@ const routes = express.Router();
 
 let products = require('../products')
 
-function validatePrice(req, res, next){
-   const { price } = req.body;
-
-   if(price){
-      next()
-   }
-
-   return res.status(400).send({ 'message': 'Price missing' })
-}
-
 routes.get('/', (req, res) => {
    res.json(products)
 })
 
-routes.get('/:name', (req, res) => {
-   const { name } = req.params;
+routes.get('/:id', (req, res) => {
+   const { id } = req.params;
 
-   const product = products.find((item) => item.name === name);
+   const product = products.find((item) => item.id === +id);
 
    if(!product){
       return res.status(404).json({ 'message': 'This product does not exist' })
@@ -37,31 +27,31 @@ routes.post('/', (req, res) => {
    res.status(201).json(product);
 })
 
-routes.put('/:name/', (req, res) => {
-   const { name } = req.params;
+routes.put('/:id', (req, res) => {
+   const { id } = req.params;
    const data = req.body;
 
-   let product = products.find((item) => item.name === name);
+   let product = products.find((item) => item.id === +id);
 
    if(!product){
       return res.status(404).json({ 'message': 'This product does not exist' })
    }
+   
+   products = products.map((item) => item.id === +id ? data : product)
 
-   products = products.map((item) => item.name === name ? data : product)
-
-   res.json(products)
+   res.json(product)
 })
 
-routes.delete('/:name/', (req, res) => {
-   const { name } = req.params;
+routes.delete('/:id', (req, res) => {
+   const { id } = req.params;
 
-   const product = products.find((item) => item.name === name);
+   const product = products.find((item) => item.id === +id);
 
    if(!product){
       return res.status(404).json({ 'message': 'This product does not exist' })
    }
 
-   products = products.filter((item) => item.name !== name)
+   products = products.filter((item) => item.id !== +id)
 
    res.json(products)
 })

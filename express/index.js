@@ -1,13 +1,12 @@
 const express = require("express");
 const productsRoutes = require("./routes/products.routes");
-const usersRoutes = require("./routes/users.routes");
 
 const app = express();
 
 app.use(express.json()); //capturar o body da requisição
 
 app.use("/products", productsRoutes);
-app.use("/users", usersRoutes);
+
 app.use((req, res, next) => {
   res.status(404).send({ message: "page not found" });
 });
