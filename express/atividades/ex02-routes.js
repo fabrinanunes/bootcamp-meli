@@ -41,4 +41,19 @@ routes.get('/', (req, res) => {
    res.status(200).json(users)
 })
 
+routes.patch('/:username', (req, res) => {
+   const { username } = req.params;
+   const password = req.body.password;
+
+   users = users.map((user) => {
+      if(user.username == username){
+         return {...user, password}
+      }
+
+      return user;
+   })
+
+   res.status(200).json(users)
+})
+
 module.exports = routes
